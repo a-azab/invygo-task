@@ -7,7 +7,8 @@ import {
   DeletedAt,
   HasMany,
 } from 'sequelize-typescript';
-import { Schedule } from 'src/schedule/entities/schedule.entity';
+import { Schedule } from '../schedule/entities/schedule.entity';
+import { Role } from '../auth/roles/role.enum';
 
 @Table({ tableName: 'users' })
 export class User extends Model {
@@ -21,7 +22,7 @@ export class User extends Model {
   password: string;
 
   @Column({ defaultValue: 1 })
-  role: number;
+  role: Role;
 
   @HasMany(() => Schedule)
   schedule: Schedule[];
@@ -31,7 +32,4 @@ export class User extends Model {
 
   @UpdatedAt
   updated_at: Date;
-
-  @DeletedAt
-  deletionDate: Date;
 }

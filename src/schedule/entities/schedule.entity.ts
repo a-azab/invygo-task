@@ -7,13 +7,13 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { User } from 'src/users/user.model';
+import { User } from '../../users/user.model';
 
 @Table({ tableName: 'schedules' })
 export class Schedule extends Model {
   @ForeignKey(() => User)
   @Column
-  userId: number;
+  user_id: number;
 
   @BelongsTo(() => User)
   user: User;
@@ -25,8 +25,8 @@ export class Schedule extends Model {
   hours: number;
 
   @CreatedAt
-  creationDate: Date;
+  created_at: Date;
 
   @UpdatedAt
-  updatedOn: Date;
+  updated_at: Date;
 }

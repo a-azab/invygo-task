@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { User } from '../users/user.model';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
+import { Schedule } from './entities/schedule.entity';
 
 @Injectable()
 export class ScheduleService {
-  create(createScheduleDto: CreateScheduleDto) {
-    return 'This action adds a new schedule';
+  constructor(@InjectModel(Schedule) private scheduleModel: typeof Schedule) {}
+  create(createScheduleDto: CreateScheduleDto | Schedule) {
+    return this.scheduleModel.create({ ...createScheduleDto });
   }
 
-  findAll() {
-    return `This action returns all schedule`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} schedule`;
+  findForUser(id: number) {
+    return this.scheduleModel.findAll({
+      where: { user_id: id },
+      include: [{ model: User }],
+    });
   }
 
   update(id: number, updateScheduleDto: UpdateScheduleDto) {
-    return `This action updates a #${id} schedule`;
+    return this.scheduleModel.update(updateScheduleDto, { where: { id } });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} schedule`;
+    return this.scheduleModel.destroy({ where: { id } });
   }
 }
